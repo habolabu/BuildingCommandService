@@ -1,0 +1,44 @@
+# application config
+server:
+  port: ${SERVER_PORT:8091}
+  servlet:
+    context-path: ${SERVER_CONTEXT_PATH:/building/command/api}
+
+# spring config
+spring:
+  application:
+    name: ${APPLICATION_NAME:c58db4c5f8227a905dd449f5d28a1957bd6130367435f18b05519999e7803bc5}
+
+  # hibernate config
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: ${HIBERNATE_DIALAECT:org.hibernate.dialect.MySQLDialect}
+    hibernate:
+      naming:
+        physical-strategy: ${HIBERNATE_NAMING:org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl}
+
+  # rabbitmq config
+  rabbitmq:
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    virtual-host: ${RABBITMQ_VIRTUAL_HOST:/}
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    ignoreDeclarationException: ${RABBITMQ_IGNORE_DECLARATION_EXCEPTION:true}
+    concurrentConsumers: ${RABBITMQ_CONCURRENT_CONSUMERS:3}
+    maxConcurrentConsumers: ${RABBITMQ_MAX_CONCURRENT_CONSUMERS:10}
+    receiveTimeout: ${RABBITMQ_RECEIVE_TIMEOUT:100000}
+
+  # datasource config
+  datasource:
+    driver-class-name: ${DATASOURCE_DRIVER_CLASS:com.mysql.cj.jdbc.Driver}
+    url: ${DATASOURCE_URL:jdbc:mysql://localhost:3306/BuildingCommandService}
+    username: ${DATASOURCE_USERNAME:root}
+    password: ${DATASOURCE_PASSWORD:12345678}
+
+logging:
+  level:
+    root: debug
