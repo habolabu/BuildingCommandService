@@ -1,0 +1,80 @@
+buildscript {
+    ext {
+        coreServiceVersion= "1.0.0"
+        springBootVersion = "2.7.3"
+        springDependencyManagementVersion = "1.0.12.RELEASE"
+        mySqlVersion = "8.0.30"
+        jaxbApiVersion = "2.4.0-b180830.0359"
+        springBootValidationVersion = '2.7.3'
+        mapstructVersion = "1.5.2.Final"
+        commonLang3Version = "3.12.0"
+        jacksonDatabindVersion = "2.13.3"
+        unirestObjectMapperJacksonVersion = "3.13.11"
+        springSecurityVersion = "2.7.4"
+        jjwtApiVersion = "0.11.5"
+        jjwtJacksonVersion = "0.11.5"
+        jjwtImplVersion = "0.11.5"
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+    }
+}
+
+plugins {
+    id "java"
+    id "org.springframework.boot" version "${springBootVersion}"
+    id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
+}
+
+group = "edu.ou"
+version = "1.0.0"
+sourceCompatibility = 17
+targetCompatibility = 17
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    implementation "edu.ou:CoreService:${coreServiceVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-jdbc:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-validation:${springBootValidationVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    runtimeOnly "mysql:mysql-connector-java:${mySqlVersion}"
+    runtimeOnly "javax.xml.bind:jaxb-api:${jaxbApiVersion}"
+    annotationProcessor "org.projectlombok:lombok"
+    implementation "org.projectlombok:lombok"
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+    implementation "org.apache.commons:commons-lang3:${commonLang3Version}"
+    implementation "org.springframework.boot:spring-boot-starter-amqp"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}"
+    implementation "com.konghq:unirest-objectmapper-jackson:${unirestObjectMapperJacksonVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-security:${springSecurityVersion}"
+    implementation "io.jsonwebtoken:jjwt-api:${jjwtApiVersion}"
+    runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jjwtJacksonVersion}"
+    runtimeOnly "io.jsonwebtoken:jjwt-impl:${jjwtImplVersion}"
+}
+
+tasks.named("test") {
+    useJUnitPlatform()
+}
+
+bootRun {
+    args = ["--spring.profiles.active=${project.properties['profile'] ?: 'prod'}"]
+}
