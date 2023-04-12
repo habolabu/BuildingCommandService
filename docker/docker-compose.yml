@@ -1,0 +1,51 @@
+version: "1.0"
+
+volumes:
+  building_command_data:
+  building_command_gradle_data:
+
+networks:
+  api_gateway_net:
+    external: true
+  command_database_net:
+    external: true
+  rabbitmq_net:
+    external: true
+
+services:
+  building_command_service:
+    container_name: "building-command-service"
+    build:
+      dockerfile: ./docker/Dockerfile
+      context: ..
+    ports:
+      - ${BUILDING_COMMAND_HOST_PORT}:${BUILDING_COMMAND_CONTAINER_PORT}
+    volumes:
+      - building_command_data:${BUILDING_COMMAND_SERVICE_VOLUMES}
+      - building_command_gradle_data:${BUILDING_COMMAND_GRADLE_VOLUMES}
+    env_file:
+      - .env
+    restart: unless-stopped
+    networks:
+      - api_gateway_net
+      - command_database_net
+      - rabbitmq_net
+    environment:
+      SERVER_PORT: ${SERVER_PORT}
+      SERVER_CONTEXT_PATH: ${SERVER_CONTEXT_PATH}
+      APPLICATION_NAME: ${APPLICATION_NAME}
+      HIBERNATE_DIALECT: ${HIBERNATE_DIALECT}
+      HIBERNATE_NAMING: ${HIBERNATE_NAMING}
+      RABBITMQ_USERNAME: ${RABBITMQ_USERNAME}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
+      RABBITMQ_VIRTUAL_HOST: ${RABBITMQ_VIRTUAL_HOST}
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_PORT: ${RABBITMQ_PORT}
+      RABBITMQ_IGNORE_DECLARATION_EXCEPTION: ${RABBITMQ_IGNORE_DECLARATION_EXCEPTION}
+      RABBITMQ_CONCURRENT_CONSUMERS: ${RABBITMQ_CONCURRENT_CONSUMERS}
+      RABBITMQ_MAX_CONCURRENT_CONSUMERS: ${RABBITMQ_MAX_CONCURRENT_CONSUMERS}
+      RABBITMQ_RECEIVE_TIMEOUT: ${RABBITMQ_RECEIVE_TIMEOUT}
+      DATASOURCE_DRIVER_CLASS: ${DATASOURCE_DRIVER_CLASS}
+      DATASOURCE_URL: ${DATASOURCE_URL}
+      DATASOURCE_USERNAME: ${DATASOURCE_USERNAME}
+      DATASOURCE_PASSWORD: ${DATASOURCE_PASSWORD}

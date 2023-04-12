@@ -38,7 +38,3 @@ spring:
     url: ${DATASOURCE_URL:jdbc:mysql://localhost:3306/BuildingCommandService}
     username: ${DATASOURCE_USERNAME:root}
     password: ${DATASOURCE_PASSWORD:12345678}
-
-logging:
-  level:
-    root: debug
