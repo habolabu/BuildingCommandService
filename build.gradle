@@ -5,7 +5,9 @@ buildscript {
         springDependencyManagementVersion = "1.0.12.RELEASE"
         mySqlVersion = "8.0.30"
         jaxbApiVersion = "2.4.0-b180830.0359"
-        springBootValidationVersion = '2.7.3'
+        springBootValidationVersion = "2.7.3"
+        lombokVersion= "1.18.26"
+        lombokMapstructBindingVersion ="0.2.0"
         mapstructVersion = "1.5.2.Final"
         commonLang3Version = "3.12.0"
         jacksonDatabindVersion = "2.13.3"
@@ -35,6 +37,7 @@ group = "edu.ou"
 version = "1.0.0"
 sourceCompatibility = 17
 targetCompatibility = 17
+archivesBaseName = "building-command-service"
 
 configurations {
     compileOnly {
@@ -46,7 +49,11 @@ repositories {
     mavenCentral()
     mavenLocal()
     maven {
-        url = uri('https://maven.pkg.github.com/habolabu/CoreService')
+        url = uri("https://maven.pkg.github.com/habolabu/CoreService")
+        credentials {
+            username = "habolabu-package-token"
+            password = "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"
+        }
     }
 }
 
@@ -60,8 +67,10 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-data-jpa"
     runtimeOnly "mysql:mysql-connector-java:${mySqlVersion}"
     runtimeOnly "javax.xml.bind:jaxb-api:${jaxbApiVersion}"
-    annotationProcessor "org.projectlombok:lombok"
-    implementation "org.projectlombok:lombok"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    implementation "org.projectlombok:lombok:${lombokVersion}"
+    implementation "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     implementation "org.apache.commons:commons-lang3:${commonLang3Version}"
@@ -74,7 +83,7 @@ dependencies {
     runtimeOnly "io.jsonwebtoken:jjwt-impl:${jjwtImplVersion}"
 }
 
-tasks.named("test") {
+test {
     useJUnitPlatform()
 }
 
